@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reset your password</title>
+  <meta name="robots" content="noindex" />
+  <style>
+    body { margin: 0; background: #FFF4E8; color: #3A2416; font-family: Georgia, Palatino, serif; text-align: center; }
+    main { max-width: 480px; margin: 0 auto; padding: 48px 24px; }
+    img { width: 140px; height: auto; }
+    h1 { color: #6A3410; font-size: 30px; line-height: 1.2; margin: 20px 0 12px; }
+    p, label { font-size: 17px; line-height: 1.55; }
+    form { display: none; text-align: left; margin-top: 20px; }
+    body.has-session form { display: grid; gap: 12px; }
+    input { width: 100%; box-sizing: border-box; border: 1px solid #F0D7B4; border-radius: 12px; padding: 12px 14px; font: 16px/1.4 Georgia, Palatino, serif; background: #FFF8F1; }
+    button, a.b { display: inline-block; background: #FF7F1A; color: #fff; text-decoration: none; border: 0; padding: 14px 30px; border-radius: 999px; font: 700 17px Georgia, Palatino, serif; cursor: pointer; text-align: center; }
+    .muted { font-size: 13px; color: #8A6A52; }
+    #status { min-height: 1.4em; }
+    .wait { display: block; }
+    .done, .err { display: none; }
+    body.is-done .wait, body.is-done form, body.is-done .err { display: none !important; }
+    body.is-done .done { display: block; }
+    body.is-error .wait, body.is-error form, body.is-error .done { display: none !important; }
+    body.is-error .err { display: block; }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="https://hfrfpxbityfmpurdzjcy.supabase.co/storage/v1/object/public/brand/murti-round-bhagva.png" alt="Hariprabodham" />
+    <div class="wait">
+      <h1>Choose a new password</h1>
+      <p>If this page opened from your reset email, enter a new password below. You can also set it in the HP Parivaar app.</p>
+    </div>
+    <div class="err">
+      <h1>This link could not be used</h1>
+      <p id="err-msg">The reset link is invalid or has expired.</p>
+      <p>Open the HP Parivaar app and tap Forgot password to get a new email.</p>
+    </div>
+    <div class="done">
+      <h1>Password updated</h1>
+      <p>Your password has been changed. Open the <strong>HP Parivaar</strong> app and sign in with the new password.</p>
+      <p><a class="b" href="hariprabodhamparivaar://home">Open HP Parivaar</a></p>
+      <p class="muted">On a computer? Just open the app on your phone.</p>
+    </div>
+    <form id="reset" autocomplete="new-password">
+      <label>New password<br /><input id="password" name="password" type="password" required minlength="8" autocomplete="new-password" /></label>
+      <label>Confirm password<br /><input id="confirm" name="confirm" type="password" required minlength="8" autocomplete="new-password" /></label>
+      <button type="submit">Save password</button>
+      <p id="status" class="muted" role="status"></p>
+    </form>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    (function () {
+      var hash = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+      var query = new URLSearchParams(location.search || '');
+      var error = hash.get('error_description') || hash.get('error') || query.get('error_description') || query.get('error');
+      var errNode = document.getElementById('err-msg');
+      if (error) {
+        document.body.classList.add('is-error');
+        if (errNode) errNode.textContent = String(error).replace(/\+/g, ' ');
+        return;
+      }
+      var client = supabase.createClient(
+        'https://hfrfpxbityfmpurdzjcy.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmcmZweGJpdHlmbXB1cmR6amN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUzMjEyNDYsImV4cCI6MjExMDg5NzI0Nn0.1s8pMvgwQhxtBsbvmRFA2P7Wh1EXeVGapo4PEgRi3PU'
+      );
+      var code = query.get('code') || hash.get('code');
+      var ready = code
+        ? client.auth.exchangeCodeForSession(code)
+        : client.auth.getSession().then(function (result) { return result; });
+      ready.then(function (result) {
+        if (result && result.error) {
+          document.body.classList.add('is-error');
+          if (errNode) errNode.textContent = result.error.message;
+          return;
+        }
+        return client.auth.getSession();
+      }).then(function (result) {
+        if (!result) return;
+        if (!result.data || !result.data.session) {
+          document.body.classList.add('is-error');
+          if (errNode) errNode.textContent = 'Open this page from the newest reset-password email.';
+          return;
+        }
+        document.body.classList.add('has-session');
+      });
+      document.getElementById('reset').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var password = document.getElementById('password').value;
+        var confirm = document.getElementById('confirm').value;
+        var status = document.getElementById('status');
+        if (password !== confirm) { status.textContent = 'The two passwords do not match.'; return; }
+        if (password.length < 8) { status.textContent = 'Use at least 8 characters.'; return; }
+        status.textContent = 'Saving…';
+        client.auth.updateUser({ password: password }).then(function (res) {
+          if (res.error) { status.textContent = res.error.message; return; }
+          document.body.classList.add('is-done');
+          document.body.classList.remove('has-session');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

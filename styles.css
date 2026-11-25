@@ -1,0 +1,184 @@
+/* Hariprabodham Parivaar legal site — palette from the HP Parivaar app */
+:root {
+  --bg: #FFF6ED;
+  --bg-deep: #F3E6D6;
+  --card: #FFFFFF;
+  --text: #1C1C1E;
+  --secondary: #6B5B4E;
+  --muted: #8E8E93;
+  --hairline: #E8D9C8;
+  --saffron: #FF7F1A;
+  --saffron-pressed: #E86E10;
+  --gold: #E6A317;
+  --cream: #FFF4E8;
+  --canvas: #E7E2DA;
+  --shadow: 0 18px 50px rgba(90, 48, 16, 0.08);
+  --radius: 22px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -80px, rgba(255, 127, 26, 0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.65;
+  font-size: 17px;
+}
+
+a { color: var(--saffron-pressed); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--saffron); }
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 28px 22px 64px; }
+
+header.site {
+  text-align: center;
+  padding: 12px 0 28px;
+}
+.logo {
+  display: block;
+  margin: 0 auto 10px;
+  width: min(280px, 72vw);
+  height: auto;
+}
+.brand {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--saffron-pressed);
+  margin: 0 0 18px;
+}
+nav.site-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+nav.site-nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid var(--hairline);
+}
+nav.site-nav a:hover,
+nav.site-nav a[aria-current="page"] {
+  background: var(--saffron);
+  color: #fff;
+  border-color: var(--saffron);
+}
+
+main.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,0.8);
+  padding: 40px 44px 48px;
+}
+
+.legal h1 {
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+  font-weight: 700;
+}
+.meta {
+  color: var(--secondary);
+  font-size: 15px;
+  margin: 0 0 28px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--hairline);
+}
+.meta p { margin: 0 0 4px; }
+
+.legal h2 {
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  margin: 34px 0 12px;
+  padding-top: 8px;
+  color: var(--text);
+  border-left: 3px solid var(--saffron);
+  padding-left: 14px;
+}
+.legal p { margin: 0 0 14px; }
+.legal ul {
+  margin: 0 0 16px;
+  padding-left: 1.2em;
+}
+.legal li { margin: 0 0 8px; }
+.legal li strong:first-child { color: var(--text); }
+.legal h1 + p, .legal .lead { font-size: 18px; }
+
+/* Landing */
+.hero { text-align: center; padding: 8px 8px 6px; }
+.hero .logo { width: min(340px, 80vw); margin-bottom: 8px; }
+.hero h1 {
+  font-size: clamp(28px, 5vw, 40px);
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  margin: 8px 0 10px;
+}
+.hero p.tag {
+  margin: 0 auto 28px;
+  max-width: 36em;
+  color: var(--secondary);
+  font-size: 18px;
+}
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+.action {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  padding: 22px 22px 20px;
+  text-align: left;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.action:hover {
+  transform: translateY(-2px);
+  border-color: var(--saffron);
+  box-shadow: 0 10px 24px rgba(255, 127, 26, 0.16);
+  color: var(--text);
+}
+.action h2 { margin: 0 0 6px; font-size: 20px; color: var(--saffron-pressed); }
+.action p { margin: 0; color: var(--secondary); font-size: 15px; }
+
+.contact {
+  margin-top: 28px;
+  text-align: center;
+  color: var(--secondary);
+  font-size: 15px;
+}
+
+footer.site {
+  text-align: center;
+  padding: 28px 12px 8px;
+  color: var(--secondary);
+  font-size: 13px;
+}
+footer.site a { color: var(--secondary); }
+footer.site p { margin: 0 0 6px; }
+
+@media (max-width: 720px) {
+  .wrap { padding: 16px 14px 48px; }
+  main.card { padding: 26px 20px 32px; border-radius: 18px; }
+  .legal h1 { font-size: 26px; }
+  .actions { grid-template-columns: 1fr; }
+  body { font-size: 16px; }
+}

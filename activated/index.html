@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Account activated</title>
+  <meta name="robots" content="noindex" />
+  <style>
+    body { margin: 0; background: #FFF4E8; color: #3A2416; font-family: Georgia, Palatino, serif; text-align: center; }
+    main { max-width: 480px; margin: 0 auto; padding: 48px 24px; }
+    img { width: 140px; height: auto; }
+    h1 { color: #6A3410; font-size: 30px; line-height: 1.2; margin: 20px 0 12px; }
+    p { font-size: 17px; line-height: 1.55; }
+    a.b { display: inline-block; background: #FF7F1A; color: #fff; text-decoration: none; padding: 14px 30px; border-radius: 999px; font-weight: 700; }
+    .muted { font-size: 13px; color: #8A6A52; }
+    .err { display: none; }
+    body.is-error .ok { display: none; }
+    body.is-error .err { display: block; }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="https://hfrfpxbityfmpurdzjcy.supabase.co/storage/v1/object/public/brand/murti-round-bhagva.png" alt="Hariprabodham" />
+    <div class="ok">
+      <h1>Jay Swaminarayan</h1>
+      <p>Your email is confirmed. Your account is activated.</p>
+      <p>Now open the <strong>HP Parivaar</strong> app on your phone and sign in. Your request will go to the App Admin Karya-Karta for approval.</p>
+      <p><a class="b" href="hariprabodhamparivaar://home">Open HP Parivaar</a></p>
+      <p class="muted">On a computer? Just open the app on your phone.</p>
+    </div>
+    <div class="err">
+      <h1>This link could not be used</h1>
+      <p id="err-msg">The confirmation link is invalid or has expired.</p>
+      <p>Open the newest email we sent, or open the HP Parivaar app and ask for a new link. Older links stop working.</p>
+      <p class="muted">On a computer? Use the newest email, or continue in the app on your phone.</p>
+    </div>
+  </main>
+  <script>
+    (function () {
+      var hash = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+      var query = new URLSearchParams(location.search || '');
+      var error = hash.get('error_description') || hash.get('error') || query.get('error_description') || query.get('error');
+      if (error) {
+        document.body.classList.add('is-error');
+        var node = document.getElementById('err-msg');
+        if (node) node.textContent = String(error).replace(/\+/g, ' ');
+      }
+    })();
+  </script>
+</body>
+</html>

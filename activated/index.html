@@ -13,6 +13,8 @@
     p { font-size: 17px; line-height: 1.55; }
     a.b { display: inline-block; background: #FF7F1A; color: #fff; text-decoration: none; padding: 14px 30px; border-radius: 999px; font-weight: 700; }
     .muted { font-size: 13px; color: #8A6A52; }
+    .good { background: #E8F6EC; border: 1px solid #1F8A42; color: #1F8A42; border-radius: 16px; padding: 14px 16px; font-weight: 700; font-size: 18px; line-height: 1.35; margin: 0 0 18px; }
+    .tick { display: inline-block; width: 28px; height: 28px; line-height: 28px; border-radius: 50%; background: #1F8A42; color: #fff; font-size: 18px; margin-right: 8px; vertical-align: middle; }
     .err { display: none; }
     body.is-error .ok { display: none; }
     body.is-error .err { display: block; }
@@ -23,9 +25,9 @@
     <img src="https://hfrfpxbityfmpurdzjcy.supabase.co/storage/v1/object/public/brand/murti-round-bhagva.png" alt="Hariprabodham" />
     <div class="ok">
       <h1>Jay Swaminarayan</h1>
-      <p>Your email is confirmed. Your account is activated.</p>
-      <p>Now open the <strong>HP Parivaar</strong> app on your phone and sign in. Your request will go to the App Admin Karya-Karta for approval.</p>
-      <p><a class="b" href="hariprabodhamparivaar://home">Open HP Parivaar</a></p>
+      <p class="good"><span class="tick">&#10003;</span>Account activated. Now open the app and sign in.</p>
+      <p>Your email is confirmed. Open the <strong>HP Parivaar</strong> app on your phone and sign in. Your request will go to the App Admin Karya-Karta for approval.</p>
+      <p><a class="b" id="open-app" href="hariprabodhamparivaar://home?activated=1">Open HP Parivaar</a></p>
       <p class="muted">On a computer? Just open the app on your phone.</p>
     </div>
     <div class="err">
@@ -40,6 +42,9 @@
       var hash = new URLSearchParams((location.hash || '').replace(/^#/, ''));
       var query = new URLSearchParams(location.search || '');
       var error = hash.get('error_description') || hash.get('error') || query.get('error_description') || query.get('error');
+      if (!error && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        setTimeout(function () { location.href = 'hariprabodhamparivaar://home?activated=1'; }, 700);
+      }
       if (error) {
         document.body.classList.add('is-error');
         var node = document.getElementById('err-msg');
